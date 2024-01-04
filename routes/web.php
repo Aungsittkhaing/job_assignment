@@ -3,6 +3,8 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemController;
+// use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ItemsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +28,14 @@ Route::middleware([
     'verified'
 ])->prefix('dashboard')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('dashboard');
-    Route::resource('item', ItemController::class);
-    Route::resource('category', CategoryController::class);
+    Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
+    Route::post('/createCategory', [CategoryController::class, 'create'])->name('createCategory');
+    Route::get('/editCategory/{id}', [CategoryController::class, 'edit'])->name('editCategory');
+    Route::get('/deleteCategory/{id}', [CategoryController::class, 'delete'])->name('deleteCategory');
+    Route::get('/updateCategory/{id}', [CategoryController::class, 'update'])->name('updateCategory');
+    Route::get('/item', [ItemController::class, 'index'])->name('item.index');
+    Route::post('/createItem', [ItemController::class, 'create'])->name('createItem');
+    Route::get('/editItem/{id}', [ItemController::class, 'edit'])->name('editItem');
+    Route::get('/updateItem/{id}', [ItemController::class, 'update'])->name('updateItem');
+    Route::get('/deleteItem/{id}', [ItemController::class, 'delete'])->name('deleteItem');
 });

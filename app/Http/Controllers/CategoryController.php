@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -15,7 +16,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::get();
+        return view('category.index', compact('categories'));
     }
 
     /**
@@ -23,64 +25,57 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        // Validate input data
+        $request->validate([
+            'categoryName' => 'required|string|max:255',
+            'categoryDescription' => 'nullable|string',
+        ]);
+
+        // Create a new category
+        $data = [
+            'title' => $request->input('categoryName'),
+            'description' => $request->input('categoryDescription', null),
+        ];
+
+        try {
+            Category::create($data);
+            return back()->with(['success' => 'Category successfully created!']);
+        } catch (\Exception $e) {
+            // Handle any exceptions, e.g., log the error
+            return back()->withErrors(['error' => 'Error creating category']);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreCategoryRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreCategoryRequest $request)
+    public function delete($id)
     {
-        //
+        try {
+            // Use 'find' instead of 'where' to get the model instance by primary key
+            $category = Category::where('id', $id);
+            if ($category) {
+                $category->delete();
+                return back()->with(['successDelete' => 'Successfully Deleted!']);
+            } else {
+                return back()->withErrors(['error' => 'Category not found']);
+            }
+        } catch (\Exception $e) {
+            // Log the exception or handle it in a way that makes sense for your application
+            return back()->withErrors(['error' => 'Error occurred during deletion. Please try again.']);
+        }
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Category $category)
+    public function edit($id)
     {
-        //
+        $categoryData = Category::where('id', $id)->first();
+        return view('category.edit', compact('categoryData'));
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Category $category)
+    public function update($id, Request $request)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateCategoryRequest  $request
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateCategoryRequest $request, Category $category)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Category $category)
-    {
-        //
+        $updateData = [
+            'title' => $request->categoryName,
+            'description' => $request->categoryDescription
+        ];
+        Category::where('id', $id)->update($updateData);
+        return redirect()->route('category.index');
     }
 }

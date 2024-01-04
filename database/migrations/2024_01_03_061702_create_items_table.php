@@ -14,17 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('items', function (Blueprint $table) {
-            $table->id();
+            $table->id('item_id');
             $table->string('name');
-            $table->double('price');
+            $table->integer('category_id');
             $table->longText('description');
-            $table->foreignId('category_id');
-            $table->foreignId('user_id');
-            $table->integer('ph_no');
-            $table->boolean('publish');
-            $table->string('item_photo');
-            $table->string('owner_name');
-            $table->longText('address');
+            $table->integer('price');
+            $table->string('owner');
+            $table->boolean('publish')->default(1);
+
             $table->timestamps();
         });
     }
