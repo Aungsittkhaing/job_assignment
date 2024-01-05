@@ -1,121 +1,119 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Item Create') }}
-        </h2>
-    </x-slot>
 
-    <div class="py-5">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="overflow-hidden">
-                <div class="w-full mb-5">
-                    <label for="information" class="text-black font-bold">Item Information</label>
-                </div>
-                <form action="{{ route('item.store') }}" method="post">
-                    @csrf
-                    <div>
-                        <label for="itemName"
-                            class="form-check-label block text-sm font-medium leading-6 text-gray-900">Item Name</label>
-                        <input name="text" type="text"
-                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+
+
+    <body class="bg-gray-100">
+
+        <div class="flex h-screen">
+
+            <!-- Left Menu Bar -->
+            <div class="bg-gray-800 text-white w-64 p-4">
+                <h1 class="text-2xl font-bold mb-4">SGB Assignment Test</h1>
+                <ul>
+                    <li class="mb-2"><a href="{{ route('category.index') }}" class="hover:text-gray-300">Category</a>
+                    </li>
+                    <li class="mb-2"><a href="{{ route('item.index') }}" class="hover:text-gray-300">Items</a></li>
+                    <!-- Add more menu items as needed -->
+                </ul>
+            </div>
+
+            <!-- Right Content Area -->
+            <div class="flex-1 p-8">
+
+                <h2 class="text-2xl font-bold mb-4">Create Item</h2>
+                @if (Session::has('errorMessage'))
+                    <div class="bg-red-200 border-t-4 border-blue-500 rounded-b text-blue-900 px-4 py-3 shadow-md flex items-center justify-between"
+                        role="alert">
+                        <div class="flex items-center">
+
+                            <p class="font-bold"> {{ Session::get('errorMessage') }}
+                            </p>
+                            <svg class="w-6 h-6 mr-2 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </div>
 
                     </div>
-                    <div class="w-full mt-3">
-                        <label for="Select Category"
-                            class="form-check-label block text-sm font-medium leading-6 text-gray-900">Select
-                            Category
-                        </label>
-                        <select value="{{ old('category') }}"
+                @endif
+
+
+                <!-- Replace the following with your form or table content -->
+                <div class="bg-white p-4 shadow-md rounded-md">
+                    <!-- Your form or table goes here -->
+
+
+
+                    <form class="form-horizontal" method="post" action="{{ route('createItem') }}">
+                        @csrf
+                        <!-- Item Name -->
+                        <label for="name">Item Name:</label>
+                        <input type="text" id="name" name="name"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            name="category">
-                            @foreach (App\Models\Category::all() as $category)
-                                <option value="{{ $category->id }}"
-                                    {{ old('category') == $category->id ? 'selected' : '' }}>{{ $category->title }}
-                                </option>
+                            required><br />
+
+                        <!-- Category ID -->
+                        <label for="category">Category</label>
+                        <select name="category_id" id=""
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            required>
+
+                            <option value="">Choose Category....</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->title }}</option>
                             @endforeach
-                        </select>
-                    </div>
-                    <div class="mt-3">
-                        <label for="itemPrice"
-                            class="form-check-label block text-sm font-medium leading-6 text-gray-900">Item
-                            Price
-                        </label>
-                        <input name="number" type="number"
-                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                    </div>
-                    <div class="mt-3">
-                        <label for="description"
-                            class="form-check-label block text-sm font-medium leading-6 text-gray-900">
-                            Description
-                        </label>
-                        <textarea id="message" rows="4"
+                        </select><br />
+
+                        <!-- Description -->
+                        <label for="description">Description:</label>
+                        <textarea id="description" name="description"
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Write your thoughts here..."></textarea>
-                    </div>
-                    <div class="mt-3">
-                        <label for="description"
-                            class="form-check-label block text-sm font-medium leading-6 text-gray-900">
-                            Status
-                        </label>
-                        <div class="flex items-center mb-4">
-                            <input id="default-checkbox" type="checkbox" value=""
-                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                            <label for="default-checkbox" class="ms-2 text-sm font-medium">Publish</label>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <label for="description"
-                            class="form-check-label block text-sm font-medium leading-6 text-gray-900">
-                            Item Photo
-                        </label>
-                        <input type="file" class="form-input">
-                    </div>
-                    <div class="w-full mt-3">
-                        <label for="ownerInformation" class="text-black font-bold">Owner Information</label>
-                    </div>
-                    <div class="mt-3">
-                        <label for="ownerName"
-                            class="form-check-label block text-sm font-medium leading-6 text-gray-900">
-                            Owner Name
-                        </label>
-                        <input name="text" type="text"
-                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                    </div>
-                    <div class="mt-3">
-                        <label for="ownerName"
-                            class="form-check-label block text-sm font-medium leading-6 text-gray-900">
-                            Contact Number
-                        </label>
-                        <div class="flex">
-                            <select
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-16 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                name="category">
-                                <option selected>+95</option>
-                                <option value="US">+90</option>
-                                <option value="CA">+86</option>
-                                <option value="FR">+45</option>
-                                <option value="DE">+40</option>
-                            </select>
-                            <input name="phNum" type="number"
-                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <label for="Address"
-                            class="form-check-label block text-sm font-medium leading-6 text-gray-900">
-                            Address
-                        </label>
-                        <textarea id="message" rows="4"
-                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Write your thoughts here..."></textarea>
-                    </div>
-                    <button
-                        class="mt-2 focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Cancel</button>
-                    <button
-                        class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Save</button>
-                </form>
+                            rows="4" required></textarea><br />
+
+                        <!-- Price -->
+                        <label for="price">Price:</label>
+                        <input type="number"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            id="price" name="price" required>
+
+                        <!-- Owner -->
+                        <label for="owner">Owner:</label>
+                        <input type="text"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            id="owner" name="owner" required><br />
+
+                        <!-- Publish -->
+                        <label for="publish">Publish:</label>
+                        <select name="publish" id=""
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            required>
+                            <option>Choose Status....</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select><br />
+
+
+
+                        <!-- Submit Button -->
+                        <input type="submit" value="Add Item"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    </form>
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </body>
+    {{-- <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                <x-welcome />
 
             </div>
         </div>
-    </div>
+    </div> --}}
 </x-app-layout>

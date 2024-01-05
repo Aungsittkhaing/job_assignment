@@ -16,8 +16,13 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::get();
+        $categories = Category::paginate(5)->withQueryString();
         return view('category.index', compact('categories'));
+    }
+
+    public function createview()
+    {
+        return view('category.create');
     }
 
     /**
@@ -27,6 +32,7 @@ class CategoryController extends Controller
      */
     public function create(Request $request)
     {
+
         // Validate input data
         $request->validate([
             'categoryName' => 'required|string|max:255',
@@ -41,27 +47,31 @@ class CategoryController extends Controller
 
         try {
             Category::create($data);
-            return back()->with(['success' => 'Category successfully created!']);
+            session()->flash('successMessage', 'Successfully create!');
+            return redirect()->route('category.index');
         } catch (\Exception $e) {
-            // Handle any exceptions, e.g., log the error
-            return back()->withErrors(['error' => 'Error creating category']);
+            session()->flash('errorMessage', 'Sorry, something went wrong!');
+            return back();
         }
     }
 
     public function delete($id)
+
     {
         try {
             // Use 'find' instead of 'where' to get the model instance by primary key
             $category = Category::where('id', $id);
             if ($category) {
                 $category->delete();
-                return back()->with(['successDelete' => 'Successfully Deleted!']);
+                session()->flash('successMessage', 'Successfully deleted!');
+                return redirect()->route('category.index');
             } else {
-                return back()->withErrors(['error' => 'Category not found']);
+                session()->flash('errorMessage', 'Sorry, something went wrong!');
+                return back();
             }
         } catch (\Exception $e) {
-            // Log the exception or handle it in a way that makes sense for your application
-            return back()->withErrors(['error' => 'Error occurred during deletion. Please try again.']);
+            session()->flash('errorMessage', 'Sorry, something went wrong!');
+            return back();
         }
     }
     public function edit($id)
@@ -71,11 +81,20 @@ class CategoryController extends Controller
     }
     public function update($id, Request $request)
     {
-        $updateData = [
-            'title' => $request->categoryName,
-            'description' => $request->categoryDescription
-        ];
-        Category::where('id', $id)->update($updateData);
-        return redirect()->route('category.index');
+        try {
+            $updateData = [
+                'title' => $request->categoryName,
+                'description' => $request->categoryDescription
+            ];
+
+            Category::where('id', $id)->update($updateData);
+            session()->flash('successMessage', 'Successfully updated!');
+
+            return redirect()->route('category.index');
+        } catch (\Exception $e) {
+            // Handle the exception here, you can log it or return an error response
+            session()->flash('errorMessage', 'Sorry, something went wrong!');
+            return back();
+        }
     }
 }
