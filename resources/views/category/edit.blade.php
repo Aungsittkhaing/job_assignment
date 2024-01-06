@@ -43,7 +43,7 @@
                 <div class="bg-white p-4 shadow-md rounded-md">
                     <!-- Your form or table goes here -->
 
-                    <form class="max-w-sm mx-auto" method="put"
+                    <form class="max-w-sm mx-auto" method="post"
                         action="{{ route('updateCategory', $categoryData->id) }}">
                         @csrf
                         <!-- CSRF Token for Laravel form protection -->

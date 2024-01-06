@@ -16,7 +16,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::paginate(5)->withQueryString();
+        $categories = Category::latest("id")->paginate(5)->withQueryString();
         return view('category.index', compact('categories'));
     }
 
@@ -56,7 +56,6 @@ class CategoryController extends Controller
     }
 
     public function delete($id)
-
     {
         try {
             // Use 'find' instead of 'where' to get the model instance by primary key

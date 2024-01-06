@@ -33,12 +33,12 @@ Route::middleware([
     Route::post('/createCategory', [CategoryController::class, 'create'])->name('createCategory');
     Route::get('/editCategory/{id}', [CategoryController::class, 'edit'])->name('editCategory');
     Route::get('/deleteCategory/{id}', [CategoryController::class, 'delete'])->name('deleteCategory');
-    Route::get('/updateCategory/{id}', [CategoryController::class, 'update'])->name('updateCategory');
+    Route::post('/updateCategory/{id}', [CategoryController::class, 'update'])->name('updateCategory');
 
     Route::get('/item', [ItemController::class, 'index'])->name('item.index');
     Route::get('/createitem', [ItemController::class, 'createview'])->name('createitem');
     Route::post('/createItem', [ItemController::class, 'create'])->name('createItem');
     Route::get('/editItem/{id}', [ItemController::class, 'edit'])->name('editItem');
-    Route::get('/updateItem/{id}', [ItemController::class, 'update'])->name('updateItem');
+    Route::post('/updateItem/{id}', [ItemController::class, 'update'])->name('updateItem');
     Route::get('/deleteItem/{id}', [ItemController::class, 'delete'])->name('deleteItem');
 });

@@ -45,7 +45,7 @@
 
 
 
-                    <form class="form-horizontal" method="put" action="{{ route('updateItem', $itemData->item_id) }}">
+                    <form class="form-horizontal" method="post" action="{{ route('updateItem', $itemData->item_id) }}">
                         @csrf
                         <!-- Item Name -->
                         <label for="name">Item Name:</label>

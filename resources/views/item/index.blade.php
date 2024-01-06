@@ -7,7 +7,7 @@
             <!-- Left Menu Bar -->
             <div class="bg-gray-800 text-white w-64 p-4">
 
-                <h1 class="text-2xl font-bold mb-4">SGB Assignment Test</h1>
+                <h1 class="text-2xl font-bold mb-4">Panacea-Soft Assignment Test</h1>
                 <ul>
                     <li class="mb-2"><a href="{{ route('category.index') }}" class="hover:text-gray-300">Category</a>
                     </li>
@@ -22,17 +22,17 @@
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 float-end">
                     Create Item</a>
                 @if (Session::has('successMessage'))
-                    <div class="bg-green-200 border-t-4 border-blue-500 rounded-b text-blue-900 px-4 py-3 shadow-md flex items-center justify-between"
+                    <div class="bg-green-200 border-t-4 border-green-500 rounded-b text-blue-900 px-4 py-3 shadow-md flex items-center justify-between"
                         role="alert">
 
                         <p class="font-bold"> {{ Session::get('successMessage') }}
                         </p>
                         <div class="flex items-center">
-                            <svg class="w-6 h-6 mr-2 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            {{-- <svg class="w-6 h-6 mr-2 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
+                            </svg> --}}
                         </div>
 
                     </div>

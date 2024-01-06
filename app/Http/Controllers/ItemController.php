@@ -10,7 +10,7 @@ class ItemController extends Controller
 {
     public function index()
     {
-        $items = Item::paginate(7)->withQueryString();
+        $items = Item::latest("item_id")->paginate(7)->withQueryString();
         $categories = Category::get();
         return view('item.index', compact('categories', 'items'));
     }
